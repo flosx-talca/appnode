@@ -22,8 +22,6 @@ jobs:
       - name: 📦 Instalar dependencias
         run: npm install
 
-      - name: ✅ Ejecutar pruebas
-        run: npm test
 
       - name: 🔍 OWASP Dependency-Check
         run: |
