@@ -1,0 +1,38 @@
+name: SafeNotes CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-test-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout código
+        uses: actions/checkout@v3
+
+      - name: ⚙️ Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: 📦 Instalar dependencias
+        run: npm install
+
+      - name: ✅ Ejecutar pruebas
+        run: npm test
+
+      - name: 🔍 OWASP Dependency-Check
+        run: |
+          mkdir -p odc-reports
+          docker run --rm \
+            --volume $(pwd):/src \
+            --volume $(pwd)/odc-reports:/report \
+            owasp/dependency-check:latest \
+            --project "SafeNotes" \
+            --scan /src \
+            --format "HTML" \
+            --out /report
