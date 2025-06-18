@@ -1,0 +1,3 @@
+npm install
+npm test
+dependency-check --project "SafeNotes" --scan . --format "HTML"
